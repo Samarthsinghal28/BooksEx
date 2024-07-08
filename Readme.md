@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/Samarthsinghal28/BookEx/blob/master/images/wallpaper.png">
+    <img src="https://github.com/Samarthsinghal28/BooksEx/blob/main/images/wallpaper.png">
 </p>
 <h1 align="center" style="font-size: 48px; font-weight: 600;">BookEx</h1>
 <p align="center"> <strong>BookEx</strong> is an online platform for giving sharing various Study Materials/Resources.
