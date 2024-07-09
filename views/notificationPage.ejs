@@ -1,0 +1,104 @@
+<% include partials/header %>
+<!-- Navbar Begins -->
+
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+		  <a class="navbar-brand mb-0 h1 logo" href="/"><img src="/images/Logo (2).png" width="32px" height="32px" class="d-inline-block align-top" alt="BookEx"> BookEx</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			  <ul class="navbar-nav mr-auto">
+				  <li class="nav-item my-auto"><a class="nav-link" href="/" style="margin: 0 10px;">Home</a></li>
+				  <li class="nav-item my-auto"><a class="nav-link" href="/books" style="margin: 0 10px;">Books</a></li>
+				  <li class="nav-item my-auto"><a class="nav-link" href="/ebooks" style="margin: 0 10px;">E-Books/PDFs</a></li>
+				  <li class="nav-item my-auto"><a class="nav-link" href="/misc" style="margin: 0 10px;">Miscellaneous</a></li>
+				  <li class="nav-item my-auto"><a class="nav-link" href="/books/new" style="margin: 0 10px;">Lend Items</a></li>
+				  <% if(currentUser != null) {%>
+				  <li class="nav-item my-auto"><a class="nav-link" href="/mybooks" style="margin: 0 10px;">My Books</a></li>
+				  <% } %>
+			  </ul>
+			<ul class="navbar-nav ml-auto">
+				<% if (!currentUser) { %>
+				<li class="nav-item">
+					<form class="form-inline my-2 my-lg-0" action="/signup" method="GET">
+						<button class="btn btn-outline-info my-2 my-sm-0" style="margin: 0 10px;">Login</button>
+					</form>
+				</li> 
+				<% } else { %>
+				<li class="nav-item">
+                    <% if(show) { if(seen) { %>
+                    <a href="/notif"><i class="far fa-bell btn-lg"></i></a>
+                    <% } else { %>
+                    <a href="/notif"><i class="fas fa-bell btn-lg" style=" background-color: blue; color: white; "></i></a>
+                    <% } } %>
+                </li>
+				<li class="nav-item" style="text-align: center;">
+					<span class="my-2 my-lg-0 mx-4">Logged in as:</span>
+					<br>
+					<span class="my-2 my-lg-0 mx-4"><%= currentUser.firstname %> <%= currentUser.lastname %></span>
+				</li>
+				<li class="nav-item my-auto" style="text-align: center;color:white;font-size: 24px;">
+					<a class="my-2 my-lg-0 mx-4" style="color: black;background-color: transparent;border: 0;" href="/<%= currentUser._id.toString() %>/cart"><i class="fa fa-shopping-cart"></i></a>
+				</li>
+				<li class="nav-item">
+					<form class="form-inline my-2 my-lg-0" action="/signout" method="GET">
+						<button class="btn btn-outline-danger my-2 my-sm-0" style="margin: 0 10px;">Logout</button>
+					</form>
+				</li>
+				<% } %>
+			</ul>
+			
+		  </div>
+		</nav>
+
+<!-- End of Navbar -->
+<!-- Adding extra margin -->
+	<p style="margin:8%"> </p>
+	
+	<div class="container" style="margin: 100px auto">
+		<h1>
+			Notifications
+		</h1>
+		<hr style="border: 1px solid black">
+		
+<!-- 	Notifications	 -->
+		
+		<% if(Data.notification.length == 0) { %>
+		<p style="text-align: center;">
+			<img src="/images/notification.png" style="width: 60%;">
+		</p>
+		<p style="text-align: center;color: #6c63ff;font-size: 3rem;font-family: cursive;">
+			All caught up.
+		</p>
+		<% } else { for(const book of Data.notification.slice().reverse()) { %>
+		<div style="width: 100%; height: auto;">
+			<div style="padding: 10px; height: 100%; width: 90%; display: inline-block; text-align:center;">
+				<p>
+					<% if(book.seen == false) { %>
+					<strong><%- book.content %></strong>
+					<% book.seen = true; book.save(); } else { %>
+					<%- book.content %>
+					<% } %>
+				</p>
+			</div>
+			<!-- Remove -->
+			<div style="padding: 10px; height: 100%; width: 5%; display: inline-block; text-align:center;">
+				<a href="/notif/<%= book._id %>/delete"><i class="fa fa-trash" style="color: red;font-size: 28px;"></i></a>
+			</div>
+		</div>
+		<hr>
+		<% } %>
+		<% if(Data.notification.length!=0) { %>
+		<div style="float:right;">
+			<a href= '/notif/deleteall' class="btn btn-outline-success" style="border-radius: 25px;">Clear all Notifications</a>
+		</div>
+		<%} }%>
+	</div>
+	
+
+<% include partials/footer %>
